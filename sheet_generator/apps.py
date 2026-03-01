@@ -1,0 +1,1 @@
+APP_DIR = "C:\\Users\\lzuzi\\Doocuments\\GitHub\\django-sopila\\sheet_generator" # Modify this to the directory where you clone the GitHub project

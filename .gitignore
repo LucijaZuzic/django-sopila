@@ -24,6 +24,20 @@ shell_history.py
 # pdf data
 sheet_generator/pdf/*
 sheet_generator/raw_predictions/*
+sheet_generator/__pycache__/*
+sheet_generator/migrations/__pycache__/*
 
 # model
 *.joblib
+
+# lilypond
+lilypond/*
+
+# ffmpeg
+ffmpeg/*
+
+# venv
+venv*/*
+
+# test code
+test_code_*.py

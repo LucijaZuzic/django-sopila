@@ -6,11 +6,13 @@ from sheet_generator.apps import APP_DIR
 from django_sopila.settings import MEDIA_ROOT, BASE_DIR
 from pydub import AudioSegment
 from joblib import load
-
+import logging
 from django_sopila.settings import ABJAD_TONES, BEAT
 from abjad import Staff, Voice, LilyPondLiteral, attach, Container
 from abjad.system.PersistenceManager import PersistenceManager
 
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
 
 def level_combined_recording(audio_file):
     # skip non stereo (uncombined) files
@@ -53,13 +55,13 @@ def make_prediction_file(filename):
     start = 0
     # in miliseconds
     step = 10
-    audio_file = AudioSegment.from_wav(
-        os.path.join(MEDIA_ROOT, filename + '.wav')
-    )
+    audio_file = AudioSegment.from_wav(os.path.join(MEDIA_ROOT, filename + '.wav'))
 
     # measured in miliseconds
     duration = len(audio_file)
     number_of_segments = int(duration / step)
+
+    logger.info(f"Audio loaded for {filename}. Starting segmentation.")
 
     all_norm_amplitudes = []
     for i in range(0, number_of_segments):
@@ -80,21 +82,38 @@ def make_prediction_file(filename):
         # end of cut segment
         start += step
 
-    rnd_clf = load(os.path.join(BASE_DIR, 'rf_polyphonic_model.joblib'))
+    logger.info("Ended segmentation.")
+
+    try:
+        model_path = os.path.join(BASE_DIR, 'poly_rf_dft_900_gini_2_1_auto_80_False.joblib')
+        rnd_clf = load(model_path)
+    except Exception as e:
+        # Logs the error appropriately.
+        logger.error(f"Failed to load model from {model_path}: {e}")
+        raise
+
+    logger.info("Model loaded. Predicting...")
     y_predicted = rnd_clf.predict(all_norm_amplitudes)
 
-    predicted_file = h5py.File(
-        os.path.join(
-            APP_DIR, 'raw_predictions', filename + '.hdf5'
-        ),
-        'w'
-    )
+    predicted_dir = os.path.join(APP_DIR, 'raw_predictions')
+    if not os.path.isdir(predicted_dir):
+        logger.info(f"Making a raw predictions directory: {predicted_dir}")
+        os.makedirs(predicted_dir)
+
+    predicted_filename = os.path.join(predicted_dir, filename + '.hdf5')
+    logger.info(f"Predictions saved to HDF5: {predicted_filename} frames.")
+    
+    predicted_file = h5py.File(predicted_filename, 'w')
+    logger.info(f"New raw predictions file: {predicted_filename}")
+
     dt = h5py.special_dtype(vlen=str)
     predicted_file.create_dataset(
         'predictions',
         data=y_predicted,
         dtype=dt
     )
+    
+    logger.info(f"Predictions saved to HDF5: {len(y_predicted)} frames.")
     predicted_file.close()
 
 
@@ -110,7 +129,7 @@ class ToneParser:
             'r'
         )
         self.filename = filename
-        self.tone_list = predicted_file['predictions'].value.tolist()
+        self.tone_list = predicted_file['predictions'][()].tolist()
         predicted_file.close()
 
         if not self.tone_list:
@@ -291,6 +310,11 @@ class ToneParser:
         container = Container([mala_voice, vela_voice])
         container.is_simultaneous = True
         notes.append(container)
+
+        pdf_dir = os.path.join(APP_DIR, 'pdf')
+        if not os.path.isdir(pdf_dir):
+            logger.info(f"Making a pdf directory: {pdf_dir}")
+            os.makedirs(pdf_dir)
 
         PersistenceManager(client=notes).as_pdf(
             os.path.join(APP_DIR, 'pdf', self.filename + ".pdf")

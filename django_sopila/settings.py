@@ -15,6 +15,10 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Set the path to the ffmpeg binary
+os.environ["PATH"] += os.pathsep + os.path.join(BASE_DIR, "ffmpeg", "bin")
+# Set the path to the lilypond binary
+os.environ["PATH"] += os.pathsep + os.path.join(BASE_DIR, "lilypond", "bin")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -23,7 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '053sqv4*o+=xmucmn)xwgv-_elik_qu3hpglm%0-ywgxe!poyi'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -37,10 +41,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Third-party apps
+    'corsheaders',
     'sheet_generator'
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',           # Must be at the top
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -149,3 +156,42 @@ BEATS_PER_SECOND = BEATS_PER_MINUTE / 60
 # timeframe length in s
 TIMEFRAME_LENGTH = 0.01
 BEAT = BEATS_PER_SECOND / TIMEFRAME_LENGTH
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+}
+
+# 2. Allow all origins for the tunnel development
+CORS_ALLOW_ALL_ORIGINS = True 
+
+from corsheaders.defaults import default_headers
+
+# 3. Manually define allowed headers to include the bypass
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "Content-Type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with"
+]
+
+# 5. Add the HTTP version of your URL here
+CSRF_TRUSTED_ORIGINS = [
+    "https://sopila-audio.com",
+    "http://sopila-audio.com"
+]
