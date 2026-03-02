@@ -1,6 +1,6 @@
-# Running a Django Server
+# Django Backend Server (django-sopila): User Guide
 
-To run and host the **django-sopila** project, you’ll follow the highly specific setup guide and the standard workflow and path for a Django application. Before hosting, ensure the app runs on your machine.
+To run and host the **django-sopila** project from [https://github.com/LucijaZuzic/django-sopila.git](https://github.com/LucijaZuzic/django-sopila.git), you’ll follow the highly specific setup guide and the standard workflow and path for a Django application. Before hosting, ensure the app runs on your machine.
 
 ## Clone the Repository
 
@@ -18,9 +18,11 @@ To download **Python 3.7**, the most stable "old" version that still works on mo
 
 If you already have a modern version of Python installed, you likely have the **Python Launcher** (`py`).
 
-On Windows, open PowerShell and run this to download the Python 3.7.9 installer:
+On Windows, open PowerShell and run this to download the Python 3.7.9 installer (the command is broken up into lines for readability, but it must be pasted as a single line):
 ```powershell
-Invoke-WebRequest -Uri "https://www.python.org/ftp/python/3.7.9/python-3.7.9-amd64.exe" -OutFile "python37_installer.exe"
+Invoke-WebRequest -Uri
+"https://www.python.org/ftp/python/3.7.9/python-3.7.9-amd64.exe"
+-OutFile "python37_installer.exe"
 ```
 
 To run the installer silently in the background on Windows, use:
@@ -28,7 +30,7 @@ To run the installer silently in the background on Windows, use:
 .\python37_installer.exe /quiet InstallAllUsers=1 PrependPath=1
 ```
 
-*Note: You may need to restart your terminal after this.*
+You may need to restart your terminal after this.
 
 ## Create a Virtual Environment
 
@@ -59,7 +61,7 @@ Check whether a `requirements.txt` file exists. If so, run:
 pip install -r requirements.txt
 ```
 
-*Note: The `pkg-resources==0.0.0` line in the `requirements.txt` file will cause errors and must be removed if present, and `scikit-learn==0.20.1` must be specified instead of `0.20.3`.*
+The `pkg-resources==0.0.0` line in the `requirements.txt` file will cause errors and must be removed if present, and `scikit-learn==0.20.1` must be specified instead of `0.20.3`.
 
 ## Initialize the Database
 
@@ -74,7 +76,7 @@ FFmpeg is used in this project to manipulate audio files.
 
 Go to [https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z](https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z).
 
-Download the `zip` file containing the FFmpeg packages and compiled executables, ready to use, instead of the source code.
+Download the `.7z` file containing the FFmpeg packages and compiled executables, ready to run, rather than the source code.
 
 Extract the files into a directory named `ffmpeg`.
 
@@ -82,15 +84,15 @@ Structure the directories so that `ffmpeg` is at the same level as `manage.py`.
 
 This ensures that the code can access `ffmpeg/bin/ffmpeg.exe`.
 
-It is recommended to add the location of `ffmpeg/bin` to the PATH variable of your operating system.
+It is recommended to add the `ffmpeg/bin` directory to your operating system's PATH variable.
 
 ## Download LilyPond
 
 LilyPond is used in this project to produce the sheet music as a `pdf` file.
 
-Go to [https://gitlab.com/lilypond/lilypond/-/releases/v2.24.4/downloads/lilypond-2.24.4-mingw-x86_64.zip](https://gitlab.com/lilypond/lilypond/-/releases/v2.24.4/downloads/lilypond-2.24.4-mingw-x86_64.zip).
+Go to [LilyPond 2.24.4 on GitLab](https://gitlab.com/lilypond/lilypond/-/releases/v2.24.4/downloads/lilypond-2.24.4-mingw-x86_64.zip).
 
-Download the `zip` file containing the LilyPond packages and the compiled executables, ready to run, instead of the source code.
+Download the `.zip` file containing the LilyPond packages and compiled executables, ready to run, rather than the source code.
 
 Extract the files into a directory named `lilypond`.
 
@@ -98,13 +100,13 @@ Structure the directories so that `lilypond` is at the same level as `manage.py`
 
 This ensures that the code can access `lilypond/bin/lilypond.exe`.
 
-It is recommended to add the location ofs `lilypond/bin` to the PATH variable of your operating system.
+It is recommended to add the `lilypond/bin` directory to your operating system's PATH variable.
 
 ## Copy the Trained Model
 
-Follow the instruction from [https://github.com/LucijaZuzic/sopila-transcriptor.git](https://github.com/LucijaZuzic/sopila-transcriptor.git) to retrain the model.
+Follow the instructions from [https://github.com/LucijaZuzic/sopila-transcriptor.git](https://github.com/LucijaZuzic/sopila-transcriptor.git) to retrain the model.
 
-The trained model with the `joblib` extension can also be downloaded from [https://drive.google.com/file/d/1HIAFEaunJomerYyrKrfPycj9OpVPSkuP/view?usp=drive_link](https://drive.google.com/file/d/1HIAFEaunJomerYyrKrfPycj9OpVPSkuP/view?usp=drive_link).
+The trained model with the `joblib` extension can also be downloaded from a [Google Drive link](https://drive.google.com/file/d/1HIAFEaunJomerYyrKrfPycj9OpVPSkuP/view?usp=drive_link).
 
 Copy the file so that `poly_rf_dft_900_gini_2_1_auto_80_False.joblib` is at the same level as `manage.py`.
 
@@ -117,13 +119,13 @@ The transcription is done using the Random Forest (RF) model and the Discrete Fo
     *   **criterion:** Gini
     *   **min_samples_split:** 2
     *   **max_samples_leaf:** 1
-    *   **max_features:** auto**
+    *   **max_features:** auto
     *   **max_depth:** 80
     *   **bootstrap:** false
 
 ## Set the Project Location
 
-In `sheet_generator\apps.py`, write `APP_DIR = "path\local"` to include the absolute path to the directory where the `apps.py` script is located.
+In `sheet_generator`, in the `apps.py` file, write `APP_DIR = "path_local"` to include the absolute path to the directory where the `apps.py` script is located.
 
 ## Run the Development Server
 
@@ -136,9 +138,9 @@ python manage.py runserver 0.0.0.0:8000
 
 You can now view the server at [http://127.0.0.1:8000/](http://127.0.0.1:8000/).
 
-*Note: You must make sure the directories `data`, `sheet_generator\raw_predictions` and `sheet_generator\pdf` are created and present alongside `manage.py` before running the server, as these are used for storing the audio fiels, model predictions and musical note files, respectively.*
+You must make sure the directories `data`, `raw_predictions` in `sheet_generator`, and `pdf` in `sheet_generator` are created and present alongside `manage.py` before running the server, as these are used for storing the audio files, model predictions, and musical note files, respectively.
 
-*Note: You will see a generic 404 Not Found message since this is a backend server with no visual interface.*
+You will see a generic 404 Not Found message since this is a backend server with no visual interface.
 
 ## Configure Tunneling
 
@@ -153,7 +155,7 @@ Download ngrok (`https://ngrok.com/download/windows?tab=install`) and register, 
 ngrok config add-authtoken <token>
 ```
 
-*Note: Since your Internet Service Provider (ISP) might flag the `dev` domain, and users cannot be expected to use a Virtual Private Network (VPN) or modify the Domain Name System (DNS), it is better to purchase a commercial domain, even if mobile users on mobile data instead of Wi-Fi might avoid this issue.*
+Since your Internet Service Provider (ISP) might flag the `dev` domain, and users cannot be expected to use a Virtual Private Network (VPN) or modify the Domain Name System (DNS), it is better to purchase a commercial domain, even if mobile users on mobile data instead of Wi-Fi might avoid this issue.
 
 Download Cloudflared to link to this commercial domain:
 ```bash
@@ -167,7 +169,7 @@ cloudflared tunnel login
 
 ## Start the Tunnel
 
-After obtaining a ngrok authtoken and signing up for a free ngrok account, you can start the ngrok tunnel.
+After obtaining an authtoken from ngrok and signing up for a free ngrok account, you can start the ngrok tunnel.
 
 To forward to the Hypertext Transfer Protocol (HTTP), use the scheme flag as follows, which instructs ngrok to forward to HTTP.
 
@@ -195,13 +197,13 @@ Select the `Edit server IP address` option in the drop-down.
 
 This will save your ngrok link as the address for all requests.
 
-*Note: You include either an adress and a port number (X.X.X.X:port) or the link withot `https://` or `http://`.*
+You include either an address and a port number (`X.X.X.X:port`) or the link without `https://` or `http://`.
 
 ## Optional Cleanup
 
-Run the script `sheet_generator\management\commands\cleanup.py` to remove all the old audio files, raw predictions, and generated PDF files.
+Run the script `cleanup.py` in `management`, inside `commands`, inside `sheet_generator`, to remove all the old audio files, raw predictions, and generated PDF files.
 
-*Note: This is only done by the system administrator if none of the files are needed for furter use.*
+This is only done by the system administrator if none of the files are needed for further use.
 
 # Appendix
 
@@ -210,13 +212,15 @@ This repository is part of a larger project for the automatic transcription of s
 ## Scientific Papers
 
 *   The scientific papers describe the:
-    *   ***Sopele*** **music dataset:** [https://doi.org/10.1016/j.dib.2019.104840](https://doi.org/10.1016/j.dib.2019.104840)
-    *   **Automatic music transcription for traditional woodwind instruments sopele:** [https://doi.org/10.1016/j.patrec.2019.09.024](https://doi.org/10.1016/j.patrec.2019.09.024)
+    *   ***Sopele*** **music dataset:**
+        *   [https://doi.org/10.1016/j.dib.2019.104840](https://doi.org/10.1016/j.dib.2019.104840)
+    *   **Automatic music transcription for traditional woodwind instruments sopele:**
+        *   [https://doi.org/10.1016/j.patrec.2019.09.024](https://doi.org/10.1016/j.patrec.2019.09.024)
 
 ## Repository Index
 
-*   The repositories include the:
-    *   **Web Interface Code:** [https://github.com/LucijaZuzic/sopila_transcriptor_web](https://github.com/LucijaZuzic/sopila_transcriptor_web)
+*   The GitHub repositories include the:
+    *   **Web Interface Code:** [Expansion to a web application](https://github.com/LucijaZuzic/sopila_transcriptor_web)
     *   **Android Application:** [https://github.com/LucijaZuzic/SopilaTranscriptor](https://github.com/LucijaZuzic/SopilaTranscriptor)
         *   **Forked from:** [https://github.com/askoki/SopilaTranscriptor](https://github.com/askoki/SopilaTranscriptor)
     *   **Django Backend Server:** [https://github.com/LucijaZuzic/django-sopila](https://github.com/LucijaZuzic/django-sopila)
@@ -245,7 +249,7 @@ The models use `scikit-learn` and default parameters, unless stated otherwise.
         *   **criterion:** Gini
         *   **min_samples_split:** 2
         *   **max_samples_leaf:** 1
-        *   **max_features:** auto**
+        *   **max_features:** auto
         *   **max_depth:** 80
         *   **bootstrap:** false
     *   **Poly RF:**
@@ -253,7 +257,7 @@ The models use `scikit-learn` and default parameters, unless stated otherwise.
         *   **criterion:** Gini
         *   **min_samples_split:** 6
         *   **max_samples_leaf:** 1
-        *   **max_features:** auto**
+        *   **max_features:** auto
         *   **max_depth:** 60
         *   **bootstrap:** false
     *   **Mono RF DFT:**
@@ -261,7 +265,7 @@ The models use `scikit-learn` and default parameters, unless stated otherwise.
         *   **criterion:** entropy
         *   **min_samples_split:** 2
         *   **max_samples_leaf:** 1
-        *   **max_features:** auto**
+        *   **max_features:** auto
         *   **max_depth:** 60
         *   **bootstrap:** false
     *   **Mono RF:**
@@ -269,19 +273,17 @@ The models use `scikit-learn` and default parameters, unless stated otherwise.
         *   **criterion:** Gini
         *   **min_samples_split:** 2
         *   **max_samples_leaf:** 1
-        *   **max_features:** auto**
+        *   **max_features:** auto
         *   **max_depth:** 80
         *   **bootstrap:** false
 
-# Supplementary Links
+## Supplementary Links
 
 *   The supplementary links define the:
-    *   **Web Interface Access:**
-        *   [https://sopilatranscriptorweb.firebaseapp.com/](https://sopilatranscriptorweb.firebaseapp.com/)
-    *   **Application Installation Android Package Kit (APK):**
-        *   [https://drive.google.com/file/d/1pdoee_afd3XuugroIi6P6vlkh9txp2-h/view?usp=drive_link](https://drive.google.com/file/d/1pdoee_afd3XuugroIi6P6vlkh9txp2-h/view?usp=drive_link)
+    *   **Web Interface Access:** [https://sopilatranscriptorweb.firebaseapp.com/](https://sopilatranscriptorweb.firebaseapp.com/)
+    *   **Application Installation Android Package Kit (APK):** [Google Drive link](https://drive.google.com/file/d/1pdoee_afd3XuugroIi6P6vlkh9txp2-h/view?usp=drive_link)
     *   **Trained Machine Learning Models:**
-        *   **Poly RF DFT (used in deployment):** [https://drive.google.com/file/d/1HIAFEaunJomerYyrKrfPycj9OpVPSkuP/view?usp=drive_link](https://drive.google.com/file/d/1HIAFEaunJomerYyrKrfPycj9OpVPSkuP/view?usp=drive_link)
-        *   **Poly RF:** [https://drive.google.com/file/d/11_mbaqlTAu3-1QkXD8GqYuaBDI1J5DEP/view?usp=drive_link](https://drive.google.com/file/d/11_mbaqlTAu3-1QkXD8GqYuaBDI1J5DEP/view?usp=drive_link)
-        *   **Mono RF DFT:** [https://drive.google.com/file/d/1_fHYT2Ykz4xWumwj4j0yT-wxdwABUEQ9/view?usp=drive_link](https://drive.google.com/file/d/1_fHYT2Ykz4xWumwj4j0yT-wxdwABUEQ9/view?usp=drive_link)
-        *   **Mono RF:** [https://drive.google.com/file/d/1UhBfw_QOduRCRDoJjlifEHBBNoOirqUL/view?usp=drive_link](https://drive.google.com/file/d/1UhBfw_QOduRCRDoJjlifEHBBNoOirqUL/view?usp=drive_link)
+        *   **Poly RF DFT (used in deployment):** [Google Drive link](https://drive.google.com/file/d/1HIAFEaunJomerYyrKrfPycj9OpVPSkuP/view?usp=drive_link)
+        *   **Poly RF:** [Google Drive link](https://drive.google.com/file/d/11_mbaqlTAu3-1QkXD8GqYuaBDI1J5DEP/view?usp=drive_link)
+        *   **Mono RF DFT:** [Google Drive link](https://drive.google.com/file/d/1_fHYT2Ykz4xWumwj4j0yT-wxdwABUEQ9/view?usp=drive_link)
+        *   **Mono RF:** [Google Drive link](https://drive.google.com/file/d/1UhBfw_QOduRCRDoJjlifEHBBNoOirqUL/view?usp=drive_link)
