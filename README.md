@@ -1,13 +1,13 @@
 # Running a Django Server
 
-To run and host the **django-sopila-master** project, you’ll follow the highly specific setup guide and the standard workflow and path for a Django application. Before hosting, ensure the app runs on your machine.
+To run and host the **django-sopila** project, you’ll follow the highly specific setup guide and the standard workflow and path for a Django application. Before hosting, ensure the app runs on your machine.
 
 ## Clone the Repository
 
 Open your terminal and run the following commands to clone the GitHub repository:
 ```bash
 git clone https://github.com/LucijaZuzic/django-sopila.git
-cd django-sopila-master
+cd django-sopila
 ```
 
 ## Install an Older Version of Python
@@ -72,7 +72,7 @@ python manage.py migrate
 
 FFmpeg is used in this project to manipulate audio files.
 
-Go to `https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z`.
+Go to [https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z](https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z).
 
 Download the `zip` file containing the FFmpeg packages and compiled executables, ready to use, instead of the source code.
 
@@ -88,7 +88,7 @@ It is recommended to add the location of `ffmpeg/bin` to the PATH variable of yo
 
 LilyPond is used in this project to produce the sheet music as a `pdf` file.
 
-Go to `https://gitlab.com/lilypond/lilypond/-/releases/v2.24.4/downloads/lilypond-2.24.4-mingw-x86_64.zip`.
+Go to [https://gitlab.com/lilypond/lilypond/-/releases/v2.24.4/downloads/lilypond-2.24.4-mingw-x86_64.zip](https://gitlab.com/lilypond/lilypond/-/releases/v2.24.4/downloads/lilypond-2.24.4-mingw-x86_64.zip).
 
 Download the `zip` file containing the LilyPond packages and the compiled executables, ready to run, instead of the source code.
 
@@ -102,17 +102,15 @@ It is recommended to add the location ofs `lilypond/bin` to the PATH variable of
 
 ## Copy the Trained Model
 
-Follow the instruction from `https://github.com/LucijaZuzic/sopila-transcriptor.git` to retrain the model.
+Follow the instruction from [https://github.com/LucijaZuzic/sopila-transcriptor.git](https://github.com/LucijaZuzic/sopila-transcriptor.git) to retrain the model.
 
-The trained model with the `joblib` extension can also be downloaded from `https://drive.google.com/file/d/1HIAFEaunJomerYyrKrfPycj9OpVPSkuP/view?usp=sharing`.
+The trained model with the `joblib` extension can also be downloaded from [https://drive.google.com/file/d/1HIAFEaunJomerYyrKrfPycj9OpVPSkuP/view?usp=drive_link](https://drive.google.com/file/d/1HIAFEaunJomerYyrKrfPycj9OpVPSkuP/view?usp=drive_link).
 
-## Set the Project Location
-
-In `sheet_generator\apps.py`, write `APP_DIR = "path\local"` to include the absolute path to the directory where the `apps.py` script is located.
+Copy the file so that `poly_rf_dft_900_gini_2_1_auto_80_False.joblib` is at the same level as `manage.py`.
 
 ## Machine Learning
 
-The transcription is done using the Random Forest (RF) model and the Discrete Fourier Transform (DFT).
+The transcription is done using the Random Forest (RF) model and the Discrete Fourier Transform (DFT) for polyphonic music (two instruments, both small and great sopila).
 
 *   **Model Parameters:** The model uses `scikit-learn` and default parameters, unless stated otherwise.
     *   **n_estimators:** 900
@@ -123,6 +121,10 @@ The transcription is done using the Random Forest (RF) model and the Discrete Fo
     *   **max_depth:** 80
     *   **bootstrap:** false
 
+## Set the Project Location
+
+In `sheet_generator\apps.py`, write `APP_DIR = "path\local"` to include the absolute path to the directory where the `apps.py` script is located.
+
 ## Run the Development Server
 
 If you run runserver without extra info, it defaults to 127.0.0.1:8000.
@@ -132,7 +134,7 @@ To run the server on all interfaces on port 8000, you need to configure it to li
 python manage.py runserver 0.0.0.0:8000
 ```
 
-You can now view the server at `http://127.0.0.1:8000/`.
+You can now view the server at [http://127.0.0.1:8000/](http://127.0.0.1:8000/).
 
 *Note: You must make sure the directories `data`, `sheet_generator\raw_predictions` and `sheet_generator\pdf` are created and present alongside `manage.py` before running the server, as these are used for storing the audio fiels, model predictions and musical note files, respectively.*
 
@@ -163,13 +165,6 @@ Then run a command to open the browser and register:
 cloudflared tunnel login
 ```
 
-To start the Cloudflared tunnel, run the following commands to connect with a commercial domain in the second line:
-```bash
-cloudflared tunnel create my-sopila
-cloudflared tunnel route dns my-sopila sopila-audio.com
-cloudflared tunnel run --url http://localhost:8000 my-sopila
-```
-
 ## Start the Tunnel
 
 After obtaining a ngrok authtoken and signing up for a free ngrok account, you can start the ngrok tunnel.
@@ -181,9 +176,16 @@ The endpoint produced will be HTTP, not Hypertext Transfer Protocol Secure (HTTP
 ngrok http --scheme=http 8000 --host-header=localhost:8000
 ```
 
-The resulting link will be displayed in the terminal, such as `https://sopila-audio.com`.
+The resulting link will be displayed in the terminal, such as [http://https://bunny-cloggy-nan.ngrok-free.dev/](http://https://bunny-cloggy-nan.ngrok-free.dev/).
 
-Anyone in the world can visit the address to view your project.
+Anyone in the world can visit the address to view your project, unless blocked by their ISP, as previously stated.
+
+To start the Cloudflared tunnel and avoid this issue, run the following commands to connect with a commercial domain in the second line:
+```bash
+cloudflared tunnel create my-sopila
+cloudflared tunnel route dns my-sopila sopila-audio.com
+cloudflared tunnel run --url http://localhost:8000 my-sopila
+```
 
 ## Configure the Mobile Application
 
@@ -194,3 +196,86 @@ Select the `Edit server IP address` option in the drop-down.
 This will save your ngrok link as the address for all requests.
 
 *Note: You include either an adress and a port number (X.X.X.X:port) or the link withot `https://` or `http://`.*
+
+# Appendix
+
+This repository is part of a larger project for the automatic transcription of sopila (a traditional Croatian instrument) music.
+
+## Scientific Papers
+
+*   The scientific papers describe the:
+    *   ***Sopele*** **music dataset:** [https://doi.org/10.1016/j.dib.2019.104840](https://doi.org/10.1016/j.dib.2019.104840)
+    *   **Automatic music transcription for traditional woodwind instruments sopele:** [https://doi.org/10.1016/j.patrec.2019.09.024](https://doi.org/10.1016/j.patrec.2019.09.024)
+
+## Repository Index
+
+*   The repositories include the:
+    *   **Web Interface Code:** [https://github.com/LucijaZuzic/sopila_transcriptor_web](https://github.com/LucijaZuzic/sopila_transcriptor_web)
+    *   **Android Application:** [https://github.com/LucijaZuzic/SopilaTranscriptor](https://github.com/LucijaZuzic/SopilaTranscriptor)
+        *   **Forked from:** [https://github.com/askoki/SopilaTranscriptor](https://github.com/askoki/SopilaTranscriptor)
+    *   **Django Backend Server:** [https://github.com/LucijaZuzic/django-sopila](https://github.com/LucijaZuzic/django-sopila)
+        *   **Forked from:** [https://github.com/askoki/django-sopila](https://github.com/askoki/django-sopila)
+    *   **Machine Learning Model Training:** [https://github.com/LucijaZuzic/sopila-transcriptor](https://github.com/LucijaZuzic/sopila-transcriptor)
+        *   **Forked from:** [https://github.com/askoki/sopila-transcriptor](https://github.com/askoki/sopila-transcriptor)
+
+## Machine Learning
+
+The models use `scikit-learn` and default parameters, unless stated otherwise.
+
+*   The transcription is done with the following possible setups:
+    *   **Music Type:**
+        *   **Polyphonic (Poly):** two instruments (both small and great sopila) - **used in deployment**
+        *   **Monophonic (Mono):** a single instrument (small or great sopila)
+    *   **Architecture:**
+        *   the Random Forest (RF) model - **used in deployment**
+        *   a Convolutional Neural Network (CNN)
+    *   **Discrete Fourier Transform (DFT):**
+        *   with the DFT - **used in deployment**
+        *   without the DFT
+
+*   The model parameters were obtained in hyperparameter tuning:
+    *   **Poly RF DFT (used in deployment):**
+        *   **n_estimators:** 900
+        *   **criterion:** Gini
+        *   **min_samples_split:** 2
+        *   **max_samples_leaf:** 1
+        *   **max_features:** auto**
+        *   **max_depth:** 80
+        *   **bootstrap:** false
+    *   **Poly RF:**
+        *   **n_estimators:** 1000
+        *   **criterion:** Gini
+        *   **min_samples_split:** 6
+        *   **max_samples_leaf:** 1
+        *   **max_features:** auto**
+        *   **max_depth:** 60
+        *   **bootstrap:** false
+    *   **Mono RF DFT:**
+        *   **n_estimators:** 1000
+        *   **criterion:** entropy
+        *   **min_samples_split:** 2
+        *   **max_samples_leaf:** 1
+        *   **max_features:** auto**
+        *   **max_depth:** 60
+        *   **bootstrap:** false
+    *   **Mono RF:**
+        *   **n_estimators:** 900
+        *   **criterion:** Gini
+        *   **min_samples_split:** 2
+        *   **max_samples_leaf:** 1
+        *   **max_features:** auto**
+        *   **max_depth:** 80
+        *   **bootstrap:** false
+
+# Supplementary Links
+
+*   The supplementary links define the:
+    *   **Web Interface Access:**
+        *   [https://sopilatranscriptorweb.firebaseapp.com/](https://sopilatranscriptorweb.firebaseapp.com/)
+    *   **Application Installation Android Package Kit (APK):**
+        *   [https://drive.google.com/file/d/1pdoee_afd3XuugroIi6P6vlkh9txp2-h/view?usp=drive_link](https://drive.google.com/file/d/1pdoee_afd3XuugroIi6P6vlkh9txp2-h/view?usp=drive_link)
+    *   **Trained Machine Learning Models:**
+        *   **Poly RF DFT (used in deployment):** [https://drive.google.com/file/d/1HIAFEaunJomerYyrKrfPycj9OpVPSkuP/view?usp=drive_link](https://drive.google.com/file/d/1HIAFEaunJomerYyrKrfPycj9OpVPSkuP/view?usp=drive_link)
+        *   **Poly RF:** [https://drive.google.com/file/d/11_mbaqlTAu3-1QkXD8GqYuaBDI1J5DEP/view?usp=drive_link](https://drive.google.com/file/d/11_mbaqlTAu3-1QkXD8GqYuaBDI1J5DEP/view?usp=drive_link)
+        *   **Mono RF DFT:** [https://drive.google.com/file/d/1_fHYT2Ykz4xWumwj4j0yT-wxdwABUEQ9/view?usp=drive_link](https://drive.google.com/file/d/1_fHYT2Ykz4xWumwj4j0yT-wxdwABUEQ9/view?usp=drive_link)
+        *   **Mono RF:** [https://drive.google.com/file/d/1UhBfw_QOduRCRDoJjlifEHBBNoOirqUL/view?usp=drive_link](https://drive.google.com/file/d/1UhBfw_QOduRCRDoJjlifEHBBNoOirqUL/view?usp=drive_link)
