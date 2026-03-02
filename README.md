@@ -197,6 +197,12 @@ This will save your ngrok link as the address for all requests.
 
 *Note: You include either an adress and a port number (X.X.X.X:port) or the link withot `https://` or `http://`.*
 
+## Optional Cleanup
+
+Run the script `sheet_generator\management\commands\cleanup.py` to remove all the old audio files, raw predictions, and generated PDF files.
+
+*Note: This is only done by the system administrator if none of the files are needed for furter use.*
+
 # Appendix
 
 This repository is part of a larger project for the automatic transcription of sopila (a traditional Croatian instrument) music.
